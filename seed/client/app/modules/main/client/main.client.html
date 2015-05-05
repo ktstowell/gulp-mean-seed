@@ -78,7 +78,9 @@
       <p>Caching</p>
 
       <p>In valence, all resource data is cached by default. You can circumvent the cache be setting the expiry to 0.</p>
-      <p>Open the network panel and click on the button below</p>
+      <p>Open the network panel and click on the button below, notice the data is returned without additional network requests!</p>
+      <p>The current cache setting is 16 seconds.</p>
+      <button ng-click="model.resources.users.__resource__.get()">Load users</button>
     </div>
   </div>
 </div>

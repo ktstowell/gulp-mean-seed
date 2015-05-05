@@ -25,7 +25,6 @@ angular.module('APP_NAME.Modules.Main')
       Resource[resource].get();
     }
 
-
     // Expose Model
     return Model;
   }]);

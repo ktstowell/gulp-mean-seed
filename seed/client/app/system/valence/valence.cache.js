@@ -18,6 +18,13 @@ angular.module('Valence')
     // CACHE VALIDATION
     //------------------------------------------------------------------------------------------//
     // @description
+
+    /**
+     * Validate
+     *
+     * @param cache
+     * @returns {*}
+     */
     Cache.validate = function(cache) {
       var def = $q.defer();
       var failed = [];
@@ -28,7 +35,9 @@ angular.module('Valence')
 
           if(validator) {
             if(!validator(cache)) {
-              failed.push(validator.error)(cache);
+              failed.push(validator.error(cache));
+              // Logging for he purpose of demos.
+              console.log(failed);
             }
           }
         }
@@ -45,14 +54,38 @@ angular.module('Valence')
       return def.promise;
     };
 
+    //
+    // VALIDATORS
+    //------------------------------------------------------------------------------------------//
+    // @description
     Cache.validators = {};
 
+    /**
+     * Empty
+     *
+     * returns when no cache exists.
+     * @type {string}
+     */
     Cache.validators.empty = 'Requested cache not found';
 
+    /**
+     * Expires
+     *
+     * returns false if the current time minus the last modified time is greater than the cache onfig
+     * @param cache
+     * @returns {boolean}
+     */
     Cache.validators.expires = function(cache) {
-      return (Date.now() - (cache.__meta__.updated || cache.__meta__.added) >= cache.config.expires);
+      console.log((Date.now() - (cache.__meta__.updated || cache.__meta__.added)), cache.config.expires);
+      return !((Date.now() - (cache.__meta__.updated || cache.__meta__.added)) >= cache.config.expires);
     };
 
+    /**
+     * Expires error.
+     *
+     * @param cache
+     * @returns {string}
+     */
     Cache.validators.expires.error = function(cache) { return 'Cache for: '+ cache.name +' is stale. Please refresh.'}
 
     Cache.defaults = {
@@ -63,16 +96,30 @@ angular.module('Valence')
     // CACHE CRUD
     //------------------------------------------------------------------------------------------//
     // @description
+
+    /**
+     * Add
+     *
+     * @param url
+     * @param config
+     */
     Cache.add = function(url, config) {
       this.__cache__[url] = {__meta__: {added: Date.now()}, config: _.merge(Cache.defaults, config), name: url};
     };
 
+    /**
+     * Remove
+     *
+     * @param url
+     * @param config
+     */
     Cache.remove = function(url, config) {
       delete this.__cache__[url];
     };
 
     /**
      * Get
+     *
      * @param url
      * @returns {*}
      */

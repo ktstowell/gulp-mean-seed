@@ -17,7 +17,7 @@ angular.module('APP_NAME.Modules.Main')
      * Users
      * @type {{url: string, type: Array}}
      */
-    Resource.users = new System.Valence.Resource('users', {url: System.Config.platform + '/users', type: Array});
+    Resource.users = new System.Valence.Resource('users', {url: System.Config.platform + '/users', type: Array, cache: {expires: (16000)}});
 
     // Expose resource
     return Resource;
